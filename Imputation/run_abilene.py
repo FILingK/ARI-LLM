@@ -6,11 +6,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 seq_len ="50"
-model = "TM-LLM"
+model = "ARI-LLM"
 percent = 100
 mask_rate = "0.1"
 train_epochs ="1"
-sample_num = 2000 #number of training samples
+sample_num = 500 #number of training samples
 llm_model = "gpt2"
 Lambda = 2
 itr = "1"

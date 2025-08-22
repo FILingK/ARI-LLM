@@ -6,7 +6,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 seq_len = "550"
-model = "TM-LLM"
+model = "ARI-LLM"
 percent = 100
 mask_rate = "0.1"
 train_epochs ="2"

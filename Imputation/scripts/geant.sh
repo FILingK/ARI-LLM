@@ -6,7 +6,7 @@ export TOKENIZERS_PARALLELISM=false
 
 # Set variables
 seq_len=50
-model="TM-LLM"
+model="ARI-LLM"
 percent=100
 mask_rate="0.1"
 train_epochs="1"

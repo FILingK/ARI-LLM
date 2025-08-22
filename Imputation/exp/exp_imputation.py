@@ -13,7 +13,11 @@ import numpy as np
 from tqdm import tqdm
 
 warnings.filterwarnings('ignore')
-
+'''
+exp_imputation is the main implementation file. For different datasets (Abilene/Geant/WS-DREAM), 
+the implementations have slight differences and are saved in the corresponding files 
+exp_abilene, exp_geant, and exp_wsdream in the current folder. When running, you need to replace exp_imputation with the corresponding file.
+'''
 class SMAPE(nn.Module):
     def __init__(self):
         super(SMAPE, self).__init__()
@@ -64,7 +68,6 @@ class Exp_Imputation(Exp_Basic):
             print(f'len_vali:{len(vali_loader)}')
             for i, batch_x in tqdm(enumerate(vali_loader)):
                 batch_x = batch_x.float().to(self.device)
-                batch_x = batch_x.permute(0, 2, 1)
                 B, T, N = batch_x.shape
                 mask = torch.zeros((B, T, N)).to(self.device)
                 sample_rate = self.args.mask_rate
@@ -77,6 +80,7 @@ class Exp_Imputation(Exp_Basic):
                     mask[:, :, col] = col_mask.unsqueeze(0).expand(B, -1)
 
                 inp = batch_x.masked_fill(mask == 0, 0)
+
 
                 for col in range(N):
 
@@ -144,44 +148,43 @@ class Exp_Imputation(Exp_Basic):
                 model_optim.zero_grad()
 
                 batch_x = batch_x.float().to(self.device)
-                batch_x = batch_x.permute(0, 2, 1)
                 B, T, N = batch_x.shape
 
                 inp_list = []
 
                 inp_2 = batch_x.clone()
 
-                for i in range(0, T, 64):
-                    inp_2[:, i:i + 63, :] = batch_x[:, i + 63:i + 64, :]
+                for i in range(0, T, 50):
+                    inp_2[:, i:i + 49, :] = batch_x[:, i + 49:i + 50, :]
                 inp_list.append(inp_2)
 
                 inp_4 = batch_x.clone()
 
-                for i in range(0, T, 32):
-                    inp_4[:, i:i + 31, :] = batch_x[:, i + 31:i + 32, :]
+                for i in range(0, T, 25):
+                    inp_4[:, i:i + 24, :] = batch_x[:, i + 24:i + 25, :]
                 inp_list.append(inp_4)
 
                 inp_8 = batch_x.clone()
-                for i in range(0, 60, 10):
-                    inp_8[:, i:i + 9, :] = batch_x[:, i + 9:i + 10, :]
+                for i in range(0, 48, 12):
+                    inp_8[:, i:i + 11, :] = batch_x[:, i + 11:i + 12, :]
 
                 inp_list.append(inp_8)
 
                 inp_16 = batch_x.clone()
-                for i in range(0, 60, 6):
+                for i in range(0, 48, 6):
                     inp_16[:, i:i + 5, :] = batch_x[:, i + 5:i + 6, :]
 
                 inp_list.append(inp_16)
 
                 inp_32 = batch_x.clone()
-                for i in range(0, 63, 3):
+                for i in range(0, 48, 3):
                     inp_32[:, i:i + 2, :] = batch_x[:, i + 2:i + 3, :]
 
                 inp_list.append(inp_32)
 
                 inp_64 = batch_x.clone()
-                for i in range(0, T, 2):
-                    inp_64[:, i:i + 1, :] = batch_x[:, i + 1:i + 2, :]
+                for i in range(0, 48, 3):
+                    inp_64[:, i:i + 1, :] = batch_x[:, i + 2:i + 3, :]
 
                 inp_list.append(inp_64)
 
@@ -241,7 +244,6 @@ class Exp_Imputation(Exp_Basic):
             print(f'len_test:{len(test_loader)}')
             for i, batch_x in tqdm(enumerate(test_loader)):
                 batch_x = batch_x.float().to(self.device)
-                batch_x = batch_x.permute(0, 2, 1)
                 B, T, N = batch_x.shape
                 features = N
 
@@ -303,6 +305,5 @@ class Exp_Imputation(Exp_Basic):
         f.write('\n')
         f.write('\n')
         f.close()
-
 
         return
