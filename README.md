@@ -11,7 +11,7 @@
 ## Introduction
 ARI-LLM adopts an autoregressive imputation strategy, where the output of each stage is predicted based on the input from the previous stage. This process continues until the entire traffic matrix is completed, enabling imputation for an arbitrary number of OD pairs.
 
-![screenshot](./figures/ARI-LLM.png)
+<img src="./figures/ARI-LLM.png" alt="screenshot" style="width:50%;">
 
 * Previous models apply one-step imputation to recover the entire TM in a single pass, whereas our autoregressive model iteratively predict a finer TM based on a coarser one.
 
