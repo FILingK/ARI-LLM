@@ -51,7 +51,6 @@ class Dataset_net_wsdream(Dataset):
 
     def __read_data__(self):
         self.scaler = StandardScaler()
-        # 处理过后的x的数据 y2x
         df_raw = pd.read_csv(os.path.join(self.root_path, self.data_path), header=None)
         # Check if the last column is entirely empty
         if df_raw.iloc[:, -1].isnull().all():
@@ -134,8 +133,6 @@ class Dataset_net_abilene(Dataset):
         self.percent = percent
 
         self.root_path = root_path
-        self.y_data_path = 'abilene_result.csv'
-
         self.data_path = data_path
 
         self.data_scale = 0
@@ -147,17 +144,15 @@ class Dataset_net_abilene(Dataset):
 
     def __read_data__(self):
         self.scaler = StandardScaler()
-        # 处理过后的x的数据 y2x
+
         df_raw = pd.read_csv(os.path.join(self.root_path, self.data_path), header=None)
         # Check if the last column is entirely empty
         if df_raw.iloc[:, -1].isnull().all():
             df_raw = df_raw.iloc[:, :-1]
 
-        df_y = pd.read_csv(os.path.join(self.root_path, self.y_data_path), header=None)
         df_raw = df_raw.iloc[:5100]
 
         deal_x = df_raw.values
-        data_y = df_y.values
 
         all_data = 5100
         num_train = int(all_data * 0.8)
@@ -189,10 +184,8 @@ class Dataset_net_abilene(Dataset):
         # standardize
         if self.scale:
             deal_x = deal_x / 1e9
-            data_y = data_y / 1e9
 
         self.data_x = deal_x[border1:border2]
-        self.data_y = data_y[border1:border2]
 
     def __getitem__(self, index):
         s_begin = random.randint(0, self.tot_len)
