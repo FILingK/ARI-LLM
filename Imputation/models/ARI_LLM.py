@@ -3,8 +3,6 @@ import torch.nn as nn
 from transformers.models.gpt2.modeling_gpt2 import GPT2Model
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 from layers.Embed import DataEmbedding, DataEmbedding_wo_time
-from peft import LoraConfig, get_peft_model
-
 
 class FlattenHead(nn.Module):
     def __init__(self, d_model, Tstep):
